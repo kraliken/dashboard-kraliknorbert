@@ -1,5 +1,4 @@
 
-
 export default function Home() {
   return (
     <div className="flex min-h-[calc(100vh-68px)] justify-center items-center">
