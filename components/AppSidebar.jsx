@@ -12,17 +12,18 @@ import {
     SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { ChevronDown, ChevronsRight, ChevronUp, LayoutDashboard, ListCheck, ListTodo, LogOut, ReceiptText, Settings, User2 } from "lucide-react";
+import { ChevronDown, ChevronUp, LayoutDashboard, LogOut, Settings, User2 } from "lucide-react";
 import Link from "next/link";
 import { signout } from "@/lib/actions/auth.actions";
 import { cookies } from 'next/headers';
+import { todoListLinks, todoReportLinks } from "@/lib/constants";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
 
 export async function AppSidebar() {
 
     const cookieStore = await cookies();
     const userData = cookieStore.get('user_data')?.value;
     const { username } = userData ? JSON.parse(userData) : null;
-
 
     return (
         <Sidebar collapsible="icon">
@@ -32,7 +33,7 @@ export async function AppSidebar() {
                         <SidebarMenuButton asChild>
                             <Link href="/">
                                 <LayoutDashboard />
-                                <span>DashBoard</span>
+                                <span>Dashboard</span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -42,46 +43,58 @@ export async function AppSidebar() {
             <SidebarSeparator />
 
             <SidebarContent>
-
-                <SidebarGroup>
-                    <SidebarGroupLabel>TASKS</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton asChild>
-                                    <Link href="/">
-                                        <ChevronsRight />
-                                        Upcoming
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton asChild>
-                                    <Link href="/">
-                                        <ListCheck />
-                                        Today
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-
-                <SidebarGroup>
-                    <SidebarGroupLabel>FILE UPLOAD</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton asChild>
-                                    <Link href="/upload/vodafone">
-                                        <ReceiptText />
-                                        Vodafone
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
+                <Collapsible defaultOpen={false} className="group/collapsible">
+                    <SidebarGroup>
+                        <CollapsibleTrigger>
+                            <SidebarGroupLabel>
+                                TODO LIST
+                                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                            </SidebarGroupLabel>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {todoListLinks.map(todolink => (
+                                        <SidebarMenuItem key={todolink.label}>
+                                            <SidebarMenuButton asChild>
+                                                <Link href={todolink.href}>
+                                                    {todolink.icon}
+                                                    {todolink.label}
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </CollapsibleContent>
+                    </SidebarGroup>
+                </Collapsible>
+                <Collapsible defaultOpen={false} className="group/collapsible">
+                    <SidebarGroup>
+                        <CollapsibleTrigger>
+                            <SidebarGroupLabel>
+                                TODO REPORTS
+                                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                            </SidebarGroupLabel>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {todoReportLinks.map(todolink => (
+                                        <SidebarMenuItem key={todolink.label}>
+                                            <SidebarMenuButton asChild>
+                                                <Link href={todolink.href}>
+                                                    {todolink.icon}
+                                                    {todolink.label}
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </CollapsibleContent>
+                    </SidebarGroup>
+                </Collapsible>
             </SidebarContent>
 
             <SidebarFooter>
