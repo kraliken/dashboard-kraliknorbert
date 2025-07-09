@@ -5,23 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInAction } from "@/lib/actions/auth.actions";
 import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
 
 const CredentialsSignInForm = () => {
 
-
-  const [data, action] = useActionState(signInAction, {
+  const [data, action, isPending] = useActionState(signInAction, {
     success: false,
     message: '',
     errors: {}
   });
 
   const SignInButton = () => {
-    const { pending } = useFormStatus();
-
     return (
-      <Button disabled={pending} className='w-full' variant='default'>
-        {pending ? 'Signing In...' : 'Sign In'}
+      <Button disabled={isPending} className='w-full mt-6' variant='default'>
+        {isPending ? 'Signing In...' : 'Sign In'}
       </Button>
     );
   };
@@ -29,40 +25,39 @@ const CredentialsSignInForm = () => {
 
   return <form action={action}>
     <div className='space-y-6'>
-      <div className='space-y-4'>
-        <Label htmlFor='username'>Username</Label>
+      <div className='space-y-2'>
+        <Label htmlFor='username' className='mb-4'>Username</Label>
         <Input
           id='username'
           name='username'
           type='text'
           required
           defaultValue={data?.data?.username || ''}
-          className={data?.errors?.username ? 'border-red-500' : ''}
+          className={data?.errors?.username ? 'border-red-400' : ''}
         />
         {data && !data.success && data.errors?.username && (
-          <div className='text-center text-destructive'>{data.errors.username}</div>
+          <div className='text-sm text-destructive pl-3'>{data.errors.username}</div>
         )}
       </div>
-      <div className='space-y-4'>
-        <Label htmlFor='password'>Password</Label>
+      <div className='space-y-2'>
+        <Label htmlFor='password' className='mb-4'>Password</Label>
         <Input
           id='password'
           name='password'
           type='password'
           required
           defaultValue={data?.data?.password || ''}
-          className={data?.errors?.password ? 'border-red-500' : ''}
+          className={data?.errors?.password ? 'border-red-400' : ''}
         />
         {data && !data.success && data.errors?.password && (
-          <div className='text-center text-destructive'>{data.errors.password}</div>
+          <div className='text-sm text-destructive pl-3'>{data.errors.password}</div>
         )}
       </div>
       <div>
         <SignInButton />
       </div>
-
       {data && !data.success && data.message && (
-        <div className='text-center text-destructive'>{data.message}</div>
+        <div className='text-sm text-destructive'>{data.message}</div>
       )}
     </div>
   </form>
