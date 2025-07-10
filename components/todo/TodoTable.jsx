@@ -1,9 +1,8 @@
-import { getTodos } from "@/lib/actions/todo.actions"
 
 
-const TodoTable = async ({ period, category }) => {
 
-    const todos = await getTodos(period, category)
+const TodoTable = async ({ period, category, todos }) => {
+
 
     return (
         <div>
