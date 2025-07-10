@@ -21,7 +21,7 @@ export default function TodoSheet({ title, triggerLabel = 'Add Todo', trigger, c
                     </Button>
                 )}
             </SheetTrigger>
-            <SheetContent side="right" className="w-[400px]" onOpenAutoFocus={(e) => e.preventDefault()}>
+            <SheetContent side="right" className="w-full sm:w-[400px]" onOpenAutoFocus={(e) => e.preventDefault()}>
                 <SheetHeader>
                     <SheetTitle>{title}</SheetTitle>
                 </SheetHeader>

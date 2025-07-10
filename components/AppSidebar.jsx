@@ -43,7 +43,7 @@ export async function AppSidebar() {
             <SidebarSeparator />
 
             <SidebarContent>
-                <Collapsible defaultOpen={false} className="group/collapsible">
+                <Collapsible defaultOpen={true} className="group/collapsible">
                     <SidebarGroup>
                         <CollapsibleTrigger>
                             <SidebarGroupLabel>
@@ -69,7 +69,7 @@ export async function AppSidebar() {
                         </CollapsibleContent>
                     </SidebarGroup>
                 </Collapsible>
-                <Collapsible defaultOpen={false} className="group/collapsible">
+                <Collapsible defaultOpen={true} className="group/collapsible">
                     <SidebarGroup>
                         <CollapsibleTrigger>
                             <SidebarGroupLabel>
