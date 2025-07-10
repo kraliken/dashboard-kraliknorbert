@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import TodoPageHeader from "@/components/todo/TodoPageHeader";
 import TodoTable from "@/components/todo/TodoTable";
 
