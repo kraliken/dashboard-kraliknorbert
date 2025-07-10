@@ -15,6 +15,9 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
+import TodoSheet from "../sheets/TodoSheet"
+import { useState } from "react"
+import ActionsCell from "./ActionCell"
 
 export const columns = [
     {
@@ -85,28 +88,6 @@ export const columns = [
     },
     {
         id: "actions",
-        cell: () => {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="left" align="center">
-                        <DropdownMenuItem>
-                            <Eye />
-                            View
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Pencil />
-                            Edit
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-
-        }
+        cell: ({ row }) => <ActionsCell row={row} />
     }
 ]
