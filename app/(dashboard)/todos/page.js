@@ -1,7 +1,6 @@
-export const dynamic = "force-dynamic";
-
+import { columns } from "@/components/tables/columns";
+import TodoTable from "@/components/tables/TodoTable";
 import TodoPageHeader from "@/components/todo/TodoPageHeader";
-import TodoTable from "@/components/todo/TodoTable";
 import { getTodos } from "@/lib/actions/todo.actions";
 
 
@@ -12,14 +11,14 @@ const TodoPage = async ({ searchParams }) => {
     const validPeriod = typeof period === 'string' ? period.trim() : '';
     const validCategory = typeof category === 'string' ? category.trim() : '';
 
-    const todos = await getTodos()
+    const todos = await getTodos(period, category)
+
     console.log(todos);
 
-
     return (
-        <div>
+        <div className="flex flex-col gap-4">
             <TodoPageHeader pageTitle={`${validCategory ? validCategory : validPeriod ? validPeriod : 'All Todos'}`} sheetTitle='New Task' triggerLabel='New Task' />
-            <TodoTable period={validPeriod} category={validCategory} todos={todos} />
+            <TodoTable columns={columns} data={todos} />
         </div>
     )
 }
