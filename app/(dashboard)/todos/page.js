@@ -3,22 +3,30 @@ import TodoTable from "@/components/tables/TodoTable";
 import TodoPageHeader from "@/components/todo/TodoPageHeader";
 import { getTodos } from "@/lib/actions/todo.actions";
 
+const normalizeParam = (param) => {
+    if (!param) return []
+    return Array.isArray(param) ? param : [param]
+}
 
 const TodoPage = async ({ searchParams }) => {
 
-    const { period = '', category = '' } = await searchParams;
+    const params = await searchParams;
+    const { period = '' } = params
 
-    const validPeriod = typeof period === 'string' ? period.trim() : '';
-    const validCategory = typeof category === 'string' ? category.trim() : '';
+    const status = normalizeParam(params.status)
+    const category = normalizeParam(params.category)
 
-    const todos = await getTodos(period, category)
-
-    console.log(todos);
+    const todos = await getTodos(period, category, status)
 
     return (
-        <div className="flex flex-col gap-4">
-            <TodoPageHeader pageTitle={`${validCategory ? validCategory : validPeriod ? validPeriod : 'All Todos'}`} sheetTitle='New Task' triggerLabel='New Task' />
-            <TodoTable columns={columns} data={todos} />
+        <div className="flex flex-col gap-4 pb-4">
+            <TodoPageHeader pageTitle='Todo List' sheetTitle='New Task' triggerLabel='New Task' />
+            <TodoTable
+                columns={columns}
+                data={todos}
+                initialStatus={status}
+                initialCategory={category}
+            />
         </div>
     )
 }

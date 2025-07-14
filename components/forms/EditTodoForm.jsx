@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Calendar } from '../ui/calendar';
 import { Textarea } from '../ui/textarea';
-import { createTodo } from '@/lib/actions/todo.actions';
+import { updateTodo } from '@/lib/actions/todo.actions';
 
 const EditTodoForm = ({ todo, onSuccess }) => {
 
@@ -20,7 +20,11 @@ const EditTodoForm = ({ todo, onSuccess }) => {
 
     const [selectedDate, setSelectedDate] = useState(new Date(todo.deadline));
 
-    const [data, action, isPending] = useActionState(createTodo, {
+    const updateAction = async (prevState, formData) => {
+        return updateTodo(prevState, todo.id, formData)
+    }
+
+    const [data, action, isPending] = useActionState(updateAction, {
         success: false,
         message: '',
         errors: {},

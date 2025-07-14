@@ -10,19 +10,17 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { useState } from "react"
-import TodoSheet from "../sheets/TodoSheet"
 import EditTodoSheet from "../sheets/EditTodoSheet"
 import EditTodoForm from "../forms/EditTodoForm"
-import DeletTodoAlertDialog from "./DeleteTodoAlertDialog"
 import DeleteTodoAlertDialog from "./DeleteTodoAlertDialog"
+import TodoViewDialog from "../todo/TodoViewDialog"
 
 const ActionsCell = ({ row }) => {
-
-    console.log(row.original);
 
     const [isEditSheetOpen, setIsEditSheetOpen] = useState(false);
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isTodoViewOpen, setIsTodoViewOpen] = useState(false);
 
     const handleEditClick = (e) => {
         e.preventDefault();
@@ -37,6 +35,12 @@ const ActionsCell = ({ row }) => {
         setIsDropdownOpen(false); // Dropdown bezárása
         setIsAlertDialogOpen(true);
     };
+    const handleViewClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDropdownOpen(false); // Dropdown bezárása
+        setIsTodoViewOpen(true);
+    };
 
     return (
         <div className="flex items-center gap-2">
@@ -48,7 +52,7 @@ const ActionsCell = ({ row }) => {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="left" align="center">
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleViewClick}>
                         <Eye />
                         View
                     </DropdownMenuItem>
@@ -67,6 +71,12 @@ const ActionsCell = ({ row }) => {
                 todo={row.original}
                 isOpen={isAlertDialogOpen}
                 onOpenChange={setIsAlertDialogOpen}
+            />
+
+            <TodoViewDialog
+                todo={row.original}
+                isOpen={isTodoViewOpen}
+                onOpenChange={setIsTodoViewOpen}
             />
 
             <EditTodoSheet

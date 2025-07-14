@@ -47,33 +47,32 @@ export const columns = [
         header: "Title",
     },
     {
+        accessorKey: "description",
+        header: "Description",
+        cell: ({ row }) => (
+            <span className="max-w-[150px] truncate block text-muted-foreground text-sm">
+                {row.getValue("description")}
+            </span>
+        ),
+    },
+    {
         accessorKey: "category",
         header: "Category",
     },
-    {
-        accessorKey: "created_at",
-        header: () => "Created",
-        cell: ({ row }) => {
-            const rawDate = row.getValue("created_at");
-            const date = new Date(rawDate);
-            const formatted = date.toLocaleDateString("hu-HU")
+    // {
+    //     accessorKey: "created_at",
+    //     header: () => "Created",
+    //     cell: ({ row }) => {
+    //         const rawDate = row.getValue("created_at");
+    //         const date = new Date(rawDate);
+    //         const formatted = date.toLocaleDateString("hu-HU")
 
-            return <div className="text-left">{formatted}</div>;
-        }
-    },
+    //         return <div className="text-left">{formatted}</div>;
+    //     }
+    // },
     {
         accessorKey: "deadline",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Due Date
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: () => "Due Date",
         cell: ({ row }) => {
             const rawDate = row.getValue("deadline");
             const date = new Date(rawDate);
@@ -81,6 +80,24 @@ export const columns = [
 
             return <div className="text-left">{formatted}</div>;
         }
+        // header: ({ column }) => {
+        //     return (
+        //         <Button
+        //             variant="ghost"
+        //             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        //         >
+        //             Due Date
+        //             <ArrowUpDown className="ml-2 h-4 w-4" />
+        //         </Button>
+        //     )
+        // },
+        // cell: ({ row }) => {
+        //     const rawDate = row.getValue("deadline");
+        //     const date = new Date(rawDate);
+        //     const formatted = date.toLocaleDateString("hu-HU")
+
+        //     return <div className="text-left">{formatted}</div>;
+        // }
     },
     {
         accessorKey: "status",

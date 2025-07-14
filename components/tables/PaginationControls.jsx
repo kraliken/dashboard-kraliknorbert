@@ -14,6 +14,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
+
 const PaginationControls = ({ table }) => {
     return (
         <div className="flex items-center justify-between px-2">
