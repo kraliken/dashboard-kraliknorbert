@@ -11,7 +11,10 @@ import { Button } from "@/components/ui/button"
 import PaginationSelect from "./PaginationSelect"
 
 
-const PaginationControls = ({ total, page = 1, limit = 5 }) => {
+const PaginationControls = ({ total, page, limit }) => {
+
+    console.log("PAGE", page);
+    console.log("LIMIT", limit);
 
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -35,7 +38,7 @@ const PaginationControls = ({ total, page = 1, limit = 5 }) => {
             <div className="flex items-center space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
                     <p className="text-sm font-medium">Rows per page</p>
-                    <PaginationSelect selectedValues={limit.toString()} onChange={handleLimitChange} />
+                    <PaginationSelect selectedValue={limit} onChange={handleLimitChange} />
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                     Page {page} of {totalPages}
