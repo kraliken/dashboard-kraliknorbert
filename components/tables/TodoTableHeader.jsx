@@ -1,7 +1,6 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { useState } from "react"
 import TodoSheet from '../sheets/TodoSheet'
 import NewTodoForm from '../forms/NewTodoForm'
 import TodoTableFacetedFilter from './TodoTableFacetedFilter'
@@ -11,11 +10,10 @@ import { Button } from "../ui/button"
 const TodoTableHeader = ({ initialStatus = [], initialCategory = [] }) => {
 
     const router = useRouter()
-
     const searchParams = useSearchParams()
 
-    const [selectedStatus, setSelectedStatus] = useState(initialStatus)
-    const [selectedCategory, setSelectedCategory] = useState(initialCategory)
+    const statusParams = searchParams.getAll("status")
+    const categoryParams = searchParams.getAll("category")
 
     const updateUrlParams = (key, values) => {
         const params = new URLSearchParams(searchParams.toString())
@@ -31,9 +29,6 @@ const TodoTableHeader = ({ initialStatus = [], initialCategory = [] }) => {
         params.delete("status")
         params.delete("category")
         router.push(`?${params.toString()}`)
-
-        setSelectedStatus([])
-        setSelectedCategory([])
     }
 
     return (
@@ -41,32 +36,30 @@ const TodoTableHeader = ({ initialStatus = [], initialCategory = [] }) => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <TodoTableFacetedFilter
                     title="Status"
-                    selectedValues={selectedStatus}
+                    selectedValues={statusParams}
                     options={[
                         { label: "Backlog", value: "backlog", icon: HelpCircle },
                         { label: "Progress", value: "progress", icon: Timer },
                         { label: "Done", value: "done", icon: CheckCircle }
                     ]}
                     onChange={(values) => {
-                        setSelectedStatus(values)
                         updateUrlParams("status", values)
                     }}
                 />
                 <TodoTableFacetedFilter
                     title="Category"
-                    selectedValues={selectedCategory}
+                    selectedValues={categoryParams}
                     options={[
                         { label: "Personal", value: "personal", icon: UserLock },
                         { label: "Work", value: "work", icon: Briefcase },
                         { label: "Development", value: "development", icon: Code }
                     ]}
                     onChange={(values) => {
-                        setSelectedCategory(values)
                         updateUrlParams("category", values)
                     }}
                 />
 
-                {(selectedStatus.length > 0 || selectedCategory.length) > 0 && <Button
+                {(statusParams.length > 0 || categoryParams.length) > 0 && <Button
                     variant="ghost"
                     size="sm"
                     onClick={resetFilters}

@@ -16,7 +16,6 @@ export default async function DashboardLayout({ children }) {
     return (
         <SidebarProvider defaultOpen={defaultOpen}>
             <UserProvider initialUser={user}>
-
                 <AppSidebar />
                 <main className="w-full min-h-full">
                     <Navbar />

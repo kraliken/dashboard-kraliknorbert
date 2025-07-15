@@ -7,10 +7,10 @@ const ReportPageHeader = ({ pageTitle = 'Daily Report', btnAction, triggerLabel 
             <h2 className="scroll-m-20 text-lg font-semibold uppercase">
                 {pageTitle}
             </h2>
-            <Button size='sm'>
+            {/* <Button size='sm'>
                 <Download className="w-4 h-4 mr-0 sm:mr-1" />
                 <span className='hidden sm:inline'>{triggerLabel}</span>
-            </Button>
+            </Button> */}
         </div>
     )
 }
