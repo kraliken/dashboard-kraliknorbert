@@ -1,23 +1,13 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Eye, MoreHorizontal, Pencil, View } from "lucide-react"
-import { ArrowUpDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
-import { Badge } from "@/components/ui/badge"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Checkbox } from "@/components/ui/checkbox"
-import TodoSheet from "../sheets/TodoSheet"
-import { useState } from "react"
 import ActionsCell from "./ActionCell"
+import { Button } from "../ui/button"
+import { ArrowUpDown } from "lucide-react"
+import DeadlineHeader from "./DeadlineHeader "
+import SortableHeader from "./SortableHeader"
 
 export const columns = [
     {
@@ -44,7 +34,7 @@ export const columns = [
     },
     {
         accessorKey: "title",
-        header: "Title",
+        header: < SortableHeader label="Title" field="title" />,
     },
     {
         accessorKey: "description",
@@ -72,7 +62,7 @@ export const columns = [
     // },
     {
         accessorKey: "deadline",
-        header: () => "Due Date",
+        header: () => <SortableHeader label="Due Date" field="deadline" />,
         cell: ({ row }) => {
             const rawDate = row.getValue("deadline");
             const date = new Date(rawDate);
