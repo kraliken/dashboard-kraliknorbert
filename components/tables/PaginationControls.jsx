@@ -1,4 +1,6 @@
-import { Table } from "@tanstack/react-table"
+'use client'
+
+import { useSearchParams, useRouter } from 'next/navigation'
 import {
     ChevronLeft,
     ChevronRight,
@@ -6,54 +8,45 @@ import {
     ChevronsRight,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import PaginationSelect from "./PaginationSelect"
 
 
-const PaginationControls = ({ table }) => {
+const PaginationControls = ({ total, page = 1, limit = 5 }) => {
+
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
+    const totalPages = Math.max(Math.ceil(total / limit), 1)
+
+    const updateParams = (newPage, newLimit = limit) => {
+        const params = new URLSearchParams(searchParams.toString())
+        params.set('page', newPage.toString())
+        params.set('limit', newLimit.toString())
+        router.push(`?${params.toString()}`)
+    }
+
+    const handleLimitChange = (value) => {
+        const newLimit = parseInt(value, 10)
+        updateParams(1, newLimit)
+    }
+
     return (
         <div className="flex items-center justify-between px-2">
-            <div className="text-muted-foreground flex-1 text-sm">
-                {/* {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                {table.getFilteredRowModel().rows.length} row(s) selected. */}
-            </div>
             <div className="flex items-center space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
-                    {/* <p className="text-sm font-medium">Rows per page</p> */}
-                    <Select
-                        value={`${table.getState().pagination.pageSize}`}
-                        onValueChange={(value) => {
-                            table.setPageSize(Number(value))
-                        }}
-                    >
-                        <SelectTrigger className="h-8 w-[70px]">
-                            <SelectValue placeholder={table.getState().pagination.pageSize} />
-                        </SelectTrigger>
-                        <SelectContent side="top">
-                            {[5, 10, 20].map((pageSize) => (
-                                <SelectItem key={pageSize} value={`${pageSize}`}>
-                                    {pageSize}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <p className="text-sm font-medium">Rows per page</p>
+                    <PaginationSelect selectedValues={limit.toString()} onChange={handleLimitChange} />
                 </div>
-                <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-                    Page {table.getState().pagination.pageIndex + 1} of{" "}
-                    {table.getPageCount()}
+                <div className="flex items-center text-sm text-muted-foreground">
+                    Page {page} of {totalPages}
                 </div>
                 <div className="flex items-center space-x-2">
                     <Button
                         variant="outline"
                         size="icon"
                         className="hidden size-8 lg:flex"
-                        onClick={() => table.setPageIndex(0)}
-                        disabled={!table.getCanPreviousPage()}
+                        onClick={() => updateParams(1)}
+                        disabled={page === 1}
                     >
                         <span className="sr-only">Go to first page</span>
                         <ChevronsLeft />
@@ -62,8 +55,8 @@ const PaginationControls = ({ table }) => {
                         variant="outline"
                         size="icon"
                         className="size-8"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
+                        onClick={() => updateParams(page - 1)}
+                        disabled={page === 1}
                     >
                         <span className="sr-only">Go to previous page</span>
                         <ChevronLeft />
@@ -72,8 +65,8 @@ const PaginationControls = ({ table }) => {
                         variant="outline"
                         size="icon"
                         className="size-8"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
+                        onClick={() => updateParams(page + 1)}
+                        disabled={page >= totalPages}
                     >
                         <span className="sr-only">Go to next page</span>
                         <ChevronRight />
@@ -82,8 +75,8 @@ const PaginationControls = ({ table }) => {
                         variant="outline"
                         size="icon"
                         className="hidden size-8 lg:flex"
-                        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                        disabled={!table.getCanNextPage()}
+                        onClick={() => updateParams(totalPages)}
+                        disabled={page >= totalPages}
                     >
                         <span className="sr-only">Go to last page</span>
                         <ChevronsRight />

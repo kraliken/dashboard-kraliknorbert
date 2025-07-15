@@ -7,7 +7,7 @@ import TodoTableFacetedFilter from './TodoTableFacetedFilter'
 import { Briefcase, CheckCircle, Code, HelpCircle, Timer, UserLock, X } from "lucide-react"
 import { Button } from "../ui/button"
 
-const TodoTableHeader = ({ initialStatus = [], initialCategory = [] }) => {
+const TodoTableHeader = () => {
 
     const router = useRouter()
     const searchParams = useSearchParams()
